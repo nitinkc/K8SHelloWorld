@@ -4,7 +4,9 @@ COPY ./pom.xml ./pom.xml
 RUN mvn dependency:go-offline -B
 COPY ./src ./src
 
-RUN mvn package && cp target/k8sHelloWorld-0.0.1-SNAPSHOT.jar app.jar
+#RUN mvn package && cp target/k8sHelloWorld-0.0.1-SNAPSHOT.jar app.jar
+# Keeping Generic name to be used with other projects
+RUN mvn package && cp target/*.jar app.jar
 
 # Rely on Docker's multi-stage build to get a smaller image based on JRE
 FROM openjdk:8-jdk-alpine
@@ -12,8 +14,8 @@ FROM openjdk:8-jdk-alpine
 WORKDIR /app
 COPY --from=maven /app/app.jar ./app.jar
 
-# VOLUME /tmp  # optional
+# optional
+# VOLUME /tmp
 EXPOSE 8080
-# also optional
 
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
