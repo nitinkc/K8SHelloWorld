@@ -2,7 +2,7 @@
 
 #### Running from localhost
 
-http://localhost:8080/
+[http://localhost:8080/](http://localhost:8080/)
 
 ### For Docker hub manual push
 
@@ -23,6 +23,10 @@ docker push nitinkc/k8s-helloworld
 docker pull nitinkc/k8s-helloworld:k8s-helloworld-latest
 docker run --publish 5005:5005 -t nitinkc/k8s-helloworld:k8s-helloworld-latest
 ```
+
+## Docker Automated Builds
+
+[Configure automated builds here](https://docs.docker.com/docker-hub/builds/)
 
 ## Important Docker Commands
 
