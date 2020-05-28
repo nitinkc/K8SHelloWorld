@@ -41,9 +41,7 @@ sudo docker ps -aq #quiet
 
 docker system prune
 
-
 # Show all containers
-
 
  # Remove Containers
  docker container rm 6d0806087e50

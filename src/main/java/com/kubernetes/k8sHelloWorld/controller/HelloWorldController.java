@@ -1,5 +1,6 @@
 package com.kubernetes.k8sHelloWorld.controller;
 
+import com.kubernetes.k8sHelloWorld.services.InstanceInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -21,6 +22,8 @@ public class HelloWorldController {
 
     @Autowired
     Environment env;
+    @Autowired
+    InstanceInfoService iis;
 
     // @Value(${ENVIRONMENT_VARIABLE_NAME:DEFAULT_VALUE})
     @Value("${" + HOST_NAME + ":" + DEFAULT_ENV_INSTANCE_GUID + "}")
@@ -31,7 +34,7 @@ public class HelloWorldController {
         String port = env.getProperty("local.server.port");
         String heath_check = "The Server is up and running on port : " + port + " with HostName : ";
 
-        return heath_check + hostName;
+        return heath_check + iis.retrieveInstanceInfo();
     }
 
     @GetMapping(path = "/hello-world")
