@@ -1,7 +1,9 @@
 # K8S HelloWorld
+- Build the project to get the .jar file
+- Create a docker image and push it to dockerhub
+- Deploy the image on GKE
 
-Running from localhost
-[http://localhost:8080/](http://localhost:8080/)
+Testing from localhost [http://localhost:8080/](http://localhost:8080/)
 
 # For Docker hub manual push
 1. Create Repository on https://hub.docker.com/<repo-name>
@@ -14,8 +16,7 @@ Running from localhost
 4. Push the image to the repository created using `docker push nitinkc/<repo-name>`
 
 ##### Example
-
-```sh
+```shell
 docker login --username=nitinkc
 docker images
 docker tag 33a7bad180b7 nitinkc/k8s-helloworld:k8s-helloworld-latest
@@ -25,7 +26,6 @@ docker run --publish 5005:5005 -t nitinkc/k8s-helloworld:k8s-helloworld-latest
 ```
 
 # DockerHub Automated Builds
-
 [Configure automated builds here](https://docs.docker.com/docker-hub/builds/)
 
 ## Important Docker Commands
@@ -49,4 +49,14 @@ docker system prune
 
  docker system prune
  docker ps -l
+```
+
+
+# Manually Deploy the Springboot app on GKE Cluster
+
+Springboot application runs on port 5000(resources.yaml). Load balancer should allow only port 8080
+```shell
+kubectl create deployment hello-service --image=gcr.io/my-kubernetes-project-52188/hello-world:v1
+
+kubectl expose deployment hello-service --type=LoadBalancer --port=8080 --target-port=5000
 ```
