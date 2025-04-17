@@ -1,17 +1,17 @@
 # K8S HelloWorld
 
-#### Running from localhost
-
+Running from localhost
 [http://localhost:8080/](http://localhost:8080/)
 
-### For Docker hub manual push
-
-1. Create Repository on https://hub.docker.com/ . <repo-name>
-2. Log into the Docker Hub from the command line
-`docker login --username=nitinkc --email=gs.nitin@gmail.com`
+# For Docker hub manual push
+1. Create Repository on https://hub.docker.com/<repo-name>
+2. Log into the Docker Hub from the command lin
+   ```shell
+    docker login --username=nitinkc --email=gs.nitin@gmail.com`
+   ```
 2. Check the image ID (on local machine) using `docker images`
 3. Tag the image `docker tag bb38976d03cf dockerhub-user-name/<repo-name>e:tag-name`
-4. Push the image to the repository  created `docker push nitinkc/<repo-name>`
+4. Push the image to the repository created using `docker push nitinkc/<repo-name>`
 
 ##### Example
 
@@ -24,7 +24,7 @@ docker pull nitinkc/k8s-helloworld:k8s-helloworld-latest
 docker run --publish 5005:5005 -t nitinkc/k8s-helloworld:k8s-helloworld-latest
 ```
 
-## Docker Automated Builds
+# DockerHub Automated Builds
 
 [Configure automated builds here](https://docs.docker.com/docker-hub/builds/)
 
