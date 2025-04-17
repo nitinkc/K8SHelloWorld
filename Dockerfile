@@ -2,10 +2,6 @@
 ######################## BUILD FROM DOCKER HUB ##########################
 #########################################################################
 
-# Use Gradle image with JDK 21 for building and running the application
-
-# Use the official Gradle image to build the project
-
 # Use the official Gradle image to build the project
 FROM gradle:8.13.0-jdk21 AS build
 
@@ -20,6 +16,9 @@ COPY settings.gradle /app/settings.gradle
 
 # Copy the source code
 COPY src /app/src
+
+# Set executable permissions for the Gradle wrapper
+RUN chmod +x gradlew
 
 # Build the project
 RUN ./gradlew build
