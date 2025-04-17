@@ -5,7 +5,9 @@
 # Use Gradle image with JDK 21 for building and running the application
 
 # Use the official Gradle image to build the project
-FROM gradle:7.6.0-jdk21 AS build
+
+# Use the official Gradle image to build the project
+FROM gradle:8.13.0-jdk21 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
