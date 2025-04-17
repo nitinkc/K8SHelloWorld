@@ -3,21 +3,36 @@
 #########################################################################
 
 # Use Gradle image with JDK 21 for building and running the application
-FROM gradle:7.6-jdk21
+
+# Use the official Gradle image to build the project
+FROM gradle:7.6.0-jdk21 AS build
+
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy Gradle build files and source code
-COPY ./build.gradle ./settings.gradle ./
-COPY ./src ./src
+# Copy the Gradle wrapper and build files
+COPY gradle /app/gradle
+COPY gradlew /app/gradlew
+COPY build.gradle /app/build.gradle
+COPY settings.gradle /app/settings.gradle
 
-# Build the application
-RUN gradle build --no-daemon
+# Copy the source code
+COPY src /app/src
 
-# Copy the built JAR file to the current directory
-RUN cp build/libs/*.jar app.jar
+# Build the project
+RUN ./gradlew build
 
-# Expose the application port
+# Use the official OpenJDK image to run the application
+FROM openjdk:21-jdk
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the built jar file from the build stage
+COPY --from=build /app/build/libs/*.jar app.jar
+
+# Expose the port the application runs on
 EXPOSE 8080
 
 # Run the application
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","app.jar"]
