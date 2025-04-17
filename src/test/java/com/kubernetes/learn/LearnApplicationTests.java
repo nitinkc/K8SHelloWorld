@@ -1,10 +1,10 @@
-package com.kubernetes.k8sHelloWorld;
+package com.kubernetes.learn;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class K8sHelloWorldApplicationTests {
+class LearnApplicationTests {
 
 	@Test
 	void contextLoads() {

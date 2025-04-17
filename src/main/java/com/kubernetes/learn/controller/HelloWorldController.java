@@ -1,14 +1,11 @@
-package com.kubernetes.k8sHelloWorld.controller;
+package com.kubernetes.learn.controller;
 
-import com.kubernetes.k8sHelloWorld.services.InstanceInfoService;
+import com.kubernetes.learn.services.InstanceInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.net.InetAddress;
 
 
 /**
@@ -39,6 +36,6 @@ public class HelloWorldController {
 
     @GetMapping(path = "/hello-world")
     public String helloWorld() {
-        return "Hello Raghu " + " V3 " ;
+        return "Hi " ;
     }
 }

@@ -1,4 +1,4 @@
-# K8SHelloWorld
+# K8S HelloWorld
 
 #### Running from localhost
 

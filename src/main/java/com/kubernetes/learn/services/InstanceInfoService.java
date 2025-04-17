@@ -1,4 +1,4 @@
-package com.kubernetes.k8sHelloWorld.services;
+package com.kubernetes.learn.services;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
