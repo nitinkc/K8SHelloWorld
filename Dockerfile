@@ -20,7 +20,7 @@ COPY ./src ./src
 RUN gradle build && cp build/libs/*.jar app.jar
 
 # Rely on Docker's multi-stage build to get a smaller image based on JRE
-FROM openjdk:21-jdk-alpine
+FROM openjdk:alpine/java:22.0.2-jdk
 WORKDIR /app
 COPY --from=gradle /app/app.jar ./app.jar
 
