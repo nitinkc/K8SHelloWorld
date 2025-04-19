@@ -31,7 +31,7 @@ public class HelloWorldController {
         String port = env.getProperty("local.server.port");
         String heath_check = "The Server is up and running on port : " + port + " with HostName : " + hostName;
 
-        return heath_check + iis.retrieveInstanceInfo();
+        return heath_check + iis.getFullHostName();
     }
 
     @GetMapping(path = "/hello-world")

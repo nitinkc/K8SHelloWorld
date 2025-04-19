@@ -1,5 +1,6 @@
 package com.kubernetes.learn.services;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +12,22 @@ import org.springframework.stereotype.Service;
 
 public class InstanceInfoService {
 
-    private static final String HOST_NAME = "HOSTNAME";
-
-    private static final String DEFAULT_ENV_INSTANCE_GUID = "LOCAL";
-
-    // @Value(${ENVIRONMENT_VARIABLE_NAME:DEFAULT_VALUE})
-    @Value("${" + HOST_NAME + ":" + DEFAULT_ENV_INSTANCE_GUID + "}")
+    @Value("${host.name:defaultHostName}")
     private String hostName;
+
+    @Value("${default.env.instance.guid:defaultInstanceGUID}")
+    private String instanceGuid;
+
+    private String fullHostName;
+
+    @PostConstruct
+    public void init() {
+        this.fullHostName = hostName + " \n instance ID : " + instanceGuid;
+    }
+
+    public String getFullHostName() {
+        return fullHostName;
+    }
 
     public String retrieveInstanceInfo() {
         return hostName.substring(hostName.length()-5);
