@@ -55,8 +55,24 @@ docker system prune
 # Manually Deploy the Springboot app on GKE Cluster
 
 Springboot application runs on port 5000(resources.yaml). Load balancer should allow only port 8080
-```shell
-kubectl create deployment hello-service --image=gcr.io/my-kubernetes-project-52188/hello-world:v1
 
-kubectl expose deployment hello-service --type=LoadBalancer --port=8080 --target-port=5000
+ Note: for GCR we need image name as ' --image=gcr.io/my-kubernetes-project-52188/hello-world:v1'
+
+```shell
+kubectl create deployment hello-service --image=nitinkc/k8s-helloworld
+kubectl expose deployment hello-service --type=LoadBalancer --port=4012 --target-port=8080
+kubectl scale deployment hello-service  --replicas=5
+minikube tunnel
+kubectl get svc
+kubectl scale deployment hello-service  --replicas=2
 ```
+
+API's
+
+<app_name>:<port_number>/
+
+<app_name>:<port_number>/hello-world
+
+<app_name>:<port_number>/actuator
+
+<app_name>:<port_number>/actuator/health

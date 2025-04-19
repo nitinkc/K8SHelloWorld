@@ -29,7 +29,7 @@ public class HelloWorldController {
     @GetMapping(path = "/")
     public String imUpAndRunning() {
         String port = env.getProperty("local.server.port");
-        String heath_check = "The Server is up and running on port : " + port + " with HostName : ";
+        String heath_check = "The Server is up and running on port : " + port + " with HostName : " + hostName;
 
         return heath_check + iis.retrieveInstanceInfo();
     }
