@@ -155,8 +155,9 @@ Another way to check the container name.
     ```
 - Finally, run the deployment
   ```shell
-    kubectl set image deployment/hello-service <your-container-name>=nitinkc/k8s-helloworld:k8s-hw-v4
-    ```
+  kubectl set image deployment/hello-service <your-container-name>=nitinkc/k8s-helloworld:k8s-hw-v4
+  kubectl set image deployment/hello-service k8s-helloworld=nitinkc/k8s-helloworld:k8s-hw-v6
+  ```
 # Manually Deploy the Springboot app on GKE Cluster
 
 Springboot application runs on port 5000(resources.yaml). Load balancer should allow only port 8080
