@@ -117,7 +117,7 @@ minikube dashboard
 
 Create the deployment and deploy a service
 ```shell
-kubectl create deployment hello-service --image=nitinkc/k8s-helloworld
+kubectl create deployment hello-service --image=nitinkc/k8s-helloworld:k8s-hw-v3
 kubectl expose deployment hello-service --type=LoadBalancer --port=4012 --target-port=8080
 ```
 
@@ -136,9 +136,7 @@ test service
 
 Springboot application runs on port 5000(resources.yaml). Load balancer should allow only port 8080
 
- Note: for GCR we need image name as ' --image=gcr.io/my-project/k8s-helloworld:v1'
-
-
+Note: for GCR we need image name as ' --image=gcr.io/my-project/k8s-helloworld:v1'
 
 ## API's
 

@@ -1,5 +1,6 @@
 package com.kubernetes.learn.controller;
 
+import com.kubernetes.learn.HealthStatus;
 import com.kubernetes.learn.services.InstanceInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,11 +23,16 @@ public class HelloWorldController {
     InstanceInfoService iis;
 
     @GetMapping(path = "/")
-    public String imUpAndRunning() {
+    public Record imUpAndRunning() {
         String port = env.getProperty("local.server.port");
         String heath_check = "The Server is up and running on port : " + port;
 
-        return heath_check +"\n"+ iis.getFullHostName() +"\n"+ iis.getAppInfo() +"\n" + iis.getLocalIpAddress();
+        return new HealthStatus(
+                heath_check,
+                iis.getFullHostName(),
+                iis.getAppInfo(),
+                iis.getLocalIpAddress()
+        );
     }
 
     @GetMapping(path = "/hello-world")
