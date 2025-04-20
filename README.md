@@ -132,6 +132,31 @@ test service
 
 ![minikube_service.png](minikube_service.png)
 
+## Subsequent updates
+After the first deployment, the subsequent deployments can be "set" using the following command
+
+```shell
+kubectl set image deployment/hello-service $(kubectl get deployment hello-service -o jsonpath="{.spec.template.spec.containers[0].name}")=nitinkc/k8s-helloworld:k8s-hw-v5
+```
+
+`$(kubectl get deployment hello-service -o jsonpath="{.spec.template.spec.containers[0].name}")` returns the name of the **container** where the deployment is schedules
+
+Another way to check the container name. 
+- Run this command
+    ```shell
+    kubectl get deployment hello-service -o yaml
+    ```
+  
+- and locate
+    ```yaml
+    spec:
+      containers:
+        - name: your-container-name-here
+    ```
+- Finally, run the deployment
+  ```shell
+    kubectl set image deployment/hello-service <your-container-name>=nitinkc/k8s-helloworld:k8s-hw-v4
+    ```
 # Manually Deploy the Springboot app on GKE Cluster
 
 Springboot application runs on port 5000(resources.yaml). Load balancer should allow only port 8080

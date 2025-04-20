@@ -31,7 +31,7 @@ public class InstanceInfoService {
 
     @PostConstruct
     public void init() {
-        this.fullHostName = hostName + " :: \n instance ID : " + instanceGuid;
+        this.fullHostName = hostName + " :: instance ID : " + instanceGuid;
     }
 
     public String getFullHostName() {
