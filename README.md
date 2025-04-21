@@ -1,175 +1,267 @@
-# K8S HelloWorld
-- Build the project to get the .jar file
-- Create a docker image and push it to dockerhub
-- Deploy the image on GKE
-- Testing spring app from localhost [http://localhost:8080/](http://localhost:8080/)
-- Testing with Docker with port defines with -p option
-   ```shell
-   docker run --publish 5005:8080 -t nitinkc/k8s-helloworld:k8s-helloworld-latest
-   ```
-  - [http://localhost:5005/](http://localhost:5005/)
-- Testing with minikube
-   ```shell
-   kubectl create deployment hello-service --image=nitinkc/k8s-helloworld
-   kubectl expose deployment hello-service --type=LoadBalancer --port=4012 --target-port=8080
-   kubectl scale deployment hello-service  --replicas=5
-   minikube tunnel
-   ```
-  - [http://localhost:4012/](http://localhost:4012/)
+# Kubernetes HelloWorld Deployment Guide
 
-# Build & Push Docker image
-1. Create Repository on https://hub.docker.com/<repo-name>
+This guide walks you through building, containerizing, and deploying a Spring Boot application on Kubernetes using 
+Docker and Minikube. It also covers testing the application locally and on Google Kubernetes Engine (GKE).
 
-Navigate to the directory containing the docker file
-```shell
+---
+
+## 🛠️ Steps Overview
+
+1. **Build the Spring Boot Project**
+2. **Create and Push Docker Image**
+3. **Test Locally with Docker**
+4. **Deploy on Minikube**
+5. **Deploy on GKE (Google Kubernetes Engine)**
+6. **Test Application Endpoints**
+
+---
+
+## 1. Build the Spring Boot Project
+
+Compile your Spring Boot application to generate the `.jar` file. Ensure your `Dockerfile` is set up to copy and 
+run this `.jar` file.
+- [DockerFile](https://github.com/nitinkc/K8SHelloWorld/blob/master/Dockerfile)
+
+---
+
+## 2. Create and Push Docker Image
+
+### a. Create a Docker Hub Repository
+
+- Visit [Docker Hub](https://hub.docker.com/) and create a new repository, e.g., `nitinkc/k8s-helloworld`.
+
+### b. Build the Docker Image
+
+Navigate to the directory containing your `Dockerfile` and run:
+
+```bash
 docker build -t nitinkc/k8s-helloworld:v3 .
+```
 
-# Check the image
+Verify the image:
+
+```bash
 docker images
 ```
 
-Tag the image for docker hub
-```shell
+### c. Tag the Image for Docker Hub
+
+Tag the image to match your Docker Hub repository:
+
+```bash
 docker tag 6762c6bb9288 nitinkc/k8s-helloworld:k8s-hw-v3
 # Or
-docker tag nitinkc/k8s-helloworld:v3  nitinkc/k8s-helloworld:k8s-hw-v3
+docker tag nitinkc/k8s-helloworld:v3 nitinkc/k8s-helloworld:k8s-hw-v3
 ```
 
-2. Log into the Docker Hub from the command lin3
-   ```shell
-    docker login --username=nitinkc 
-    docker login --username=nitinkc --email=gs.nitin@gmail.com
-   ```
-push the image to docker hub
-```shell
-docker login --username=nitinkc 
-docker push nitinkc/k8s-helloworld:k8s-hw-v3 
-```
+### d. Log in to Docker Hub
 
-Pull the image to ensure its there on docker hub
-```shell
-docker pull nitinkc/k8s-helloworld:k8s-hw-v3
-```
-
-Run the image to test locally
-```shell
-docker run -p 5005:8080 -t nitinkc/k8s-helloworld:k8s-hw-v3
-```
-
-##### Example
-```shell
+```bash
 docker login --username=nitinkc
-#Should be run in the directory where Dockerfile is present, v3 is the local tag
-docker build -t nitinkc/k8s-helloworld:v3 .
-docker images
-# Tag by either image id or the tag
-docker tag 6762c6bb9288 nitinkc/k8s-helloworld:k8s-hw-v3
-docker tag nitinkc/k8s-helloworld:v3  nitinkc/k8s-helloworld:k8s-hw-v3
+```
 
-docker push nitinkc/k8s-helloworld:k8s-hw-v3 
+### e. Push the Image to Docker Hub
+
+```bash
+docker push nitinkc/k8s-helloworld:k8s-hw-v3
+```
+
+### f. Pull the Image to Verify
+
+```bash
 docker pull nitinkc/k8s-helloworld:k8s-hw-v3
+```
 
+---
+
+## 3. Test Locally with Docker
+
+Run the Docker container and map ports:
+
+```bash
 docker run -p 5005:8080 -t nitinkc/k8s-helloworld:k8s-hw-v3
 ```
 
-Testing with Docker with port defines with -p option
+Access the application at [http://localhost:5005/](http://localhost:5005/).
 
-```shell
-docker run --publish 5005:8080 -t nitinkc/k8s-helloworld:k8s-helloworld-latest
-```
-[http://localhost:5005/](http://localhost:5005/)
+---
 
-### Important Docker Commands
+## 4. Deploy on Minikube
 
-```sh
-# To list all running Docker containers
-docker ps --all
+### a. Start Minikube Cluster
 
-# List all containers, both running and stopped
-sudo docker ps -a
-sudo docker ps -aq #quiet
-
-docker system prune
-
-# Show all containers
-# Remove Containers
-docker container rm 6d0806087e50
-docker container rm 8cf7ae980534
-
-docker system prune
-docker ps -l
-```
-
-# DockerHub Automated Builds
-[Configure automated builds here](https://docs.docker.com/docker-hub/builds/)
-
-# Testing with minikube
-
-Start the minikube cluster
-```shell
+```bash
 minikube start
 ```
 
-Start the dashboard to watch from the GUI
-```shell
+### b. Access Minikube Dashboard (Optional)
+
+```bash
 minikube dashboard
 ```
 
-Create the deployment and deploy a service
-```shell
+### c. Create Deployment and Expose Service
+
+```bash
 kubectl create deployment hello-service --image=nitinkc/k8s-helloworld:k8s-hw-v3
 kubectl expose deployment hello-service --type=LoadBalancer --port=4012 --target-port=8080
 ```
 
-Start a tunnel to test the service
-```shell
-#Starting tunnel for service hello-service.
+### d. Scale the Deployment
+
+```bash
+kubectl scale deployment hello-service --replicas=5
+```
+
+### e. Start Minikube Tunnel
+
+```bash
 minikube tunnel
 ```
 
-test service
-[http://localhost:4012/](http://localhost:4012/)
+Access the application at [http://localhost:4012/](http://localhost:4012/).
 
-![minikube_service.png](minikube_service.png)
+---
 
-## Subsequent updates
-After the first deployment, the subsequent deployments can be "set" using the following command
+## 5. Deploy on GKE (Google Kubernetes Engine)
 
-```shell
-kubectl set image deployment/hello-service $(kubectl get deployment hello-service -o jsonpath="{.spec.template.spec.containers[0].name}")=nitinkc/k8s-helloworld:k8s-hw-v5
+### a. Set Up GKE Cluster
+
+Ensure you have a GKE cluster set up. If not, create one using the Google Cloud Console or `gcloud` CLI.
+
+### b. Authenticate Docker with GCR (Google Container Registry)
+
+```bash
+gcloud auth configure-docker
 ```
 
-`$(kubectl get deployment hello-service -o jsonpath="{.spec.template.spec.containers[0].name}")` returns the name of the **container** where the deployment is schedules
+### c. Tag the Image for GCR
 
-Another way to check the container name. 
-- Run this command
-    ```shell
-    kubectl get deployment hello-service -o yaml
-    ```
-  
-- and locate
-    ```yaml
-    spec:
-      containers:
-        - name: your-container-name-here
-    ```
-- Finally, run the deployment
-  ```shell
-  kubectl set image deployment/hello-service <your-container-name>=nitinkc/k8s-helloworld:k8s-hw-v4
-  kubectl set image deployment/hello-service k8s-helloworld=nitinkc/k8s-helloworld:k8s-hw-v6
+```bash
+docker tag nitinkc/k8s-helloworld:k8s-hw-v3 gcr.io/<your-project-id>/k8s-helloworld:v3
+```
+
+### d. Push the Image to GCR
+
+```bash
+docker push gcr.io/<your-project-id>/k8s-helloworld:v3
+```
+
+### e. Deploy on GKE
+
+```bash
+kubectl create deployment hello-service --image=gcr.io/<your-project-id>/k8s-helloworld:v3
+kubectl expose deployment hello-service --type=LoadBalancer --port=8080 --target-port=8080
+```
+
+Access the application using the external IP provided by the LoadBalancer.
+
+---
+
+## 6. Test Application Endpoints
+
+Test the following endpoints to ensure the application is running correctly:
+
+- `http://localhost:8080/`
+- `http://localhost:8080/hello-world`
+- `http://localhost:8080/actuator`
+- `http://localhost:8080/actuator/health`
+
+---
+
+## 🔧 Important Docker Commands
+
+- List all Docker containers:
+
+  ```bash
+  docker ps --all
   ```
-# Manually Deploy the Springboot app on GKE Cluster
 
-Springboot application runs on port 5000(resources.yaml). Load balancer should allow only port 8080
+- Remove specific containers:
 
-Note: for GCR we need image name as ' --image=gcr.io/my-project/k8s-helloworld:v1'
+  ```bash
+  docker container rm <container-id>
+  ```
 
-## API's
+- Clean up unused Docker resources:
 
-<app_name>:<port_number>/
+  ```bash
+  docker system prune
+  ```
 
-<app_name>:<port_number>/hello-world
+---
 
-<app_name>:<port_number>/actuator
+## 🔄 Update Deployment with New Image
 
-<app_name>:<port_number>/actuator/health
+After building and pushing a new image (e.g., `k8s-hw-v5`), update the deployment:
+
+```bash
+kubectl set image deployment/hello-service hello-service=nitinkc/k8s-helloworld:k8s-hw-v5
+```
+
+Alternatively, find the container name and update:
+
+```bash
+kubectl get deployment hello-service -o yaml
+kubectl set image deployment/hello-service <container-name>=nitinkc/k8s-helloworld:k8s-hw-v5
+```
+
+---
+
+## 🧪 Testing with Docker
+
+Run the Docker container with port mapping:
+
+```bash
+docker run --publish 5005:8080 -t nitinkc/k8s-helloworld:k8s-helloworld-latest
+```
+
+Access the application at [http://localhost:5005/](http://localhost:5005/).
+
+---
+
+## 🧪 Testing with Minikube
+
+Start the Minikube cluster:
+
+```bash
+minikube start
+```
+
+Access the Minikube dashboard:
+
+```bash
+minikube dashboard
+```
+
+Create the deployment and expose a service:
+
+```bash
+kubectl create deployment hello-service --image=nitinkc/k8s-helloworld:k8s-hw-v3
+kubectl expose deployment hello-service --type=LoadBalancer --port=4012 --target-port=8080
+```
+
+Start a tunnel to test the service:
+
+```bash
+minikube tunnel
+```
+
+Test the service at [http://localhost:4012/](http://localhost:4012/).
+
+---
+
+## 🔄 Subsequent Updates
+
+To update the deployment with a new image version:
+
+```bash
+kubectl set image deployment/hello-service hello-service=nitinkc/k8s-helloworld:k8s-hw-v5
+```
+
+Alternatively, find the container name and update:
+
+```bash
+kubectl get deployment hello-service -o yaml
+kubectl set image deployment/hello-service <container-name>=nitinkc/k8s-helloworld:k8s-hw-v5
+```
